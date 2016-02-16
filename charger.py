@@ -604,15 +604,25 @@ class charger(object):
 			var.isLikelyBenign( )
 			var.isBenign( )
 			var.isUncertainSignificance( )
+
+	def combineClassifications( self, var ): 
+	# use within classifer for now, can add a combinedAnnotation to the variant object later
+		var_combined = var.pathogenicity
+		if (var.pathogenicity != var.clinical["description"] and 
+			var.clinical["description"] != "Uncertain Significance"):
+			var_combined = var.clinical["description"]
+		return var_combined
+
 	def printClassifications( self ):
 		print '\t'.join( ["Variant" , "PositiveEvidence" , \
-			"CharGerClassification" , "ClinVarAnnoation"] )
+			"CharGerClassification" , "ClinVarAnnoation", "CombinedAnnotation"] )
 		i = 0
 		for var in self.userVariants:
+			var_combined = self.combineClassifications(var)
 			i += 1
 			print '\t'.join( [ str(i) , var.uniqueVar() , \
 				var.positiveEvidence() , var.pathogenicity , \
-				var.clinical["description"] ] )
+				var.clinical["description"], var_combined ] )
 
 	@staticmethod
 	def safeOpen( inputFile , rw , **kwargs ):

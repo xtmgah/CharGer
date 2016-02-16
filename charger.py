@@ -624,6 +624,46 @@ class charger(object):
 				var.positiveEvidence() , var.pathogenicity , \
 				var.clinical["description"], var_combined ] )
 
+	def writeSummary( self , outFile , **kwargs ):
+		delim = kwargs.get( 'delim' , '\t' )
+		try:
+			outFH = self.safeOpen( outFile , 'w' , warning=True )
+			headLine = '\t'.join( ["HUGO_Symbol" , "Chromosome" , "Start" , \
+				"Stop" , "Reference" , "Alternate" , "Strand" , "Assembly" , \
+				"Variant_Type" , "Variant_Classification" , \
+				"Sample" , "Transcript" , "Codon_Position" , "Protein" , \
+				"Peptide_Reference" , "Peptide_Position" , "Peptide_Alternate" , \
+				"VEP_Most_Severe_Consequence" , "ClinVar_Pathogenicity" , \
+				"PositiveEvidence" , "NegativeEvidence" , "CharGerClassification"] )
+			outFH.write( headLine )
+			for var in self.userVariants:
+				fields = []
+				fields.append( str(var.gene) )
+				fields.append( str(var.chromosome) )
+				fields.append( str(var.start) )
+				fields.append( str(var.stop) )
+				fields.append( str(var.reference) )
+				fields.append( str(var.alternate) )
+				fields.append( str(var.strand) )
+				fields.append( str(var.assembly) )
+				fields.append( str(var.variantType) )
+				fields.append( str(var.variantClass) )
+				fields.append( str(var.sample) )
+				fields.append( str(var.transcriptCodon) )
+				fields.append( str(var.positionCodon) )
+				fields.append( str(var.transcriptPeptide) )
+				fields.append( str(var.referencePeptide) )
+				fields.append( str(var.positionPeptide) )
+				fields.append( str(var.alternatePeptide) )
+				fields.append( str(var.mostSevereConsequence) )
+				fields.append( str(var.clinical["description"]) )
+				fields.append( str(var.positiveEvidence()) )
+				fields.append( str(var.negativeEvidence()) )
+				fields.append( str(var.pathogenicity) )
+				outFH.write( delim.join( fields ) + "\n" )
+		except:
+			print "CharGer Warning: Cannot write summary"
+
 	@staticmethod
 	def safeOpen( inputFile , rw , **kwargs ):
 		errwar = kwargs.get( 'warning' , False )

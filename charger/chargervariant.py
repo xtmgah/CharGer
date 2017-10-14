@@ -16,7 +16,7 @@ class chargervariant(mafvariant):
 	supportScore = 1
 	moderateScore = 2
 	strongScore = 4
-	veryStrongScore = 8
+	veryStrongScore = 6
 	standAloneScore = 8
 	pathogenic = "Pathogenic"
 	likelyPathogenic = "Likely Pathogenic"
